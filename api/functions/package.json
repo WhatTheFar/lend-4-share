@@ -9,9 +9,7 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
-  "engines": {
-    "node": "10"
-  },
+  "engines": {},
   "main": "lib/index.js",
   "dependencies": {
     "axios": "^0.19.0",

@@ -129,7 +129,8 @@ function CreateRoomModal({ open, onClose }) {
 }
 
 function Dashboard({ userId }) {
-  const [open, setOpen] = useState(true);
+  // const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [roomsSnapshot, loading, error] = useCollectionOnce(
     db.collection('rooms').where('users', 'array-contains', userId || 'test'),
     // .where('users', 'array-contains', {

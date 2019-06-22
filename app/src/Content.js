@@ -21,6 +21,8 @@ import Dashboard from './Dashboard';
 import Profile from './Profile';
 import Login from './Login';
 import Token from './Token';
+import PayResult from './PayResult';
+import BidResult from './BidResult';
 
 const styles = theme => ({
   paper: {
@@ -49,7 +51,7 @@ function Content(props) {
   const { classes } = props;
 
   // const token = localStorage.getItem('token');
-  const token = "token"
+  const token = 'token';
 
   if (token) {
     return (
@@ -59,6 +61,8 @@ function Content(props) {
           <Route path="/events" component={EventHistory} />
           <Route path="/profile" component={Profile} />
           <Route path="/login" component={Login} />
+          <Route path="/pay-result/:id" component={PayResult} />
+          <Route path="/bid-result/:id" component={BidResult} />
           <Route path="/" component={Dashboard} />
         </Switch>
       </React.Fragment>
