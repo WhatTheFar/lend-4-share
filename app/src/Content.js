@@ -13,13 +13,14 @@ import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
-import RoomInfo from './RoomInfo'
-import EventHistory from './EventHistory'
-import Dashboard from './Dashboard'
-import Profile from './Profile'
-import Login from './Login'
+import RoomInfo from './RoomInfo';
+import EventHistory from './EventHistory';
+import Dashboard from './Dashboard';
+import Profile from './Profile';
+import Login from './Login';
+import Token from './Token';
 
 const styles = theme => ({
   paper: {
@@ -47,15 +48,31 @@ const styles = theme => ({
 function Content(props) {
   const { classes } = props;
 
-  return (
-    <React.Fragment>
-      <Route exact path="/" component={Dashboard} />
-      <Route path="/room" component={RoomInfo} />
-      <Route path="/events" component={EventHistory} />
-      <Route exact path="/profile" component={Profile} />
-      <Route exact path="/login" component={Login} />
-    </React.Fragment>
-  );
+  // const token = localStorage.getItem('token');
+  const token = "token"
+
+  if (token) {
+    return (
+      <React.Fragment>
+        <Switch>
+          <Route path="/room/:id" component={RoomInfo} />
+          <Route path="/events" component={EventHistory} />
+          <Route path="/profile" component={Profile} />
+          <Route path="/login" component={Login} />
+          <Route path="/" component={Dashboard} />
+        </Switch>
+      </React.Fragment>
+    );
+  } else {
+    return (
+      <React.Fragment>
+        <Switch>
+          <Route exact path="/token" component={Token} />
+          <Route path="/" component={Login} />
+        </Switch>
+      </React.Fragment>
+    );
+  }
 }
 
 Content.propTypes = {

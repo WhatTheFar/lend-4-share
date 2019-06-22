@@ -13,8 +13,7 @@ import {
   Button,
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { db } from "../firebase"
-
+import { db } from '../firebase';
 
 const second = 1000;
 const minute = second * 60;
@@ -28,7 +27,6 @@ function removeTimeFromDate(date) {
 }
 
 function RoomItem({ roomId, roomItem }) {
-
   const currentTime = removeTimeFromDate(new Date()).getTime();
   const startDateTime = removeTimeFromDate(roomItem.startDate).getTime();
   const diffTime = startDateTime - currentTime;
@@ -130,10 +128,14 @@ function CreateRoomModal({ open, onClose }) {
   );
 }
 
-function Dashboard({userId}) {
+function Dashboard({ userId }) {
   const [open, setOpen] = useState(true);
   const [roomsSnapshot, loading, error] = useCollectionOnce(
-    db.collection("rooms").where("users", "array-contains", db.doc(`/users/${userId || "test"}`))
+    db.collection('rooms').where('users', 'array-contains', userId || 'test'),
+    // .where('users', 'array-contains', {
+    //   ref: db.doc(`/users/${userId || 'test'}`),
+    //   peerOnRound: 1
+    // }),
   );
 
   const onClose = () => setOpen(false);
@@ -149,11 +151,9 @@ function Dashboard({userId}) {
           <RoomItem roomItem={roomItem} />
         ))} */}
         {roomsSnapshot.docs.map(doc => {
-          const roomItem = doc.data()
-          roomItem.startDate = roomItem.startDate.toDate()
-          return (
-            <RoomItem roomId={doc.id} roomItem={roomItem} />
-          )
+          const roomItem = doc.data();
+          roomItem.startDate = roomItem.startDate.toDate();
+          return <RoomItem roomId={doc.id} roomItem={roomItem} />;
         })}
       </Container>
       <CreateRoomModal open={open} onClose={onClose} />

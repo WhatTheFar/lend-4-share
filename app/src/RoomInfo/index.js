@@ -1,7 +1,10 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
 import MemberCard from './MemberCard';
-import { useDocumentOnce } from 'react-firebase-hooks/firestore';
+import {
+  useDocumentData,
+} from 'react-firebase-hooks/firestore';
+import { db } from '../firebase';
 
 const members = [
   {
@@ -38,14 +41,20 @@ const members = [
   },
 ];
 
-function RoomInfo() {
-  const [roomSnapshot, loading, error] = useDocumentOnce(
-    db.doc(`rooms/${URLSearchParams roomId}`),
+function RoomInfo({ match }) {
+  console.log('RoomInfo');
+  console.log('roomId', match.params);
+  const roomId = match.params.id;
+  const [roomSnapshot, loading, error] = useDocumentData(
+    db.doc(`rooms/${roomId}`),
   );
   if (loading || error) {
     return null;
   }
-  roomSnapshot
+
+  const room = roomSnapshot;
+  room.startDate = room.startDate.toDate();
+  console.log(room);
 
   return (
     <div>
@@ -59,18 +68,21 @@ function RoomInfo() {
       <Typography gutterBottom>
         Members: <strong>5</strong>
         <br />
-        Share Date: <strong>5th June 2019</strong>
+        Share Date: <strong>{room.startDate.toISOString()}</strong>
         <br />
-        Share Amount: <strong> ฿ 2000 </strong>
+        Share Amount: <strong> ฿ {room.amount} </strong>
         <br />
-        Peer Dates: <strong>Every Tuesday</strong>
+        Peer Dates: <strong> Every {room.period} days</strong>
       </Typography>
 
       <hr style={{ marginTop: '1em', marginBottom: '1em' }} />
 
       <Typography variant="h6">Members</Typography>
-      {members.map(member => (
+      {/* {members.map(member => (
         <MemberCard member={member} />
+      ))} */}
+      {room.users.map(userId => (
+        <MemberCard userId={userId} />
       ))}
     </div>
   );
