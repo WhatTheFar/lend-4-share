@@ -1,0 +1,47 @@
+{
+  "token": {
+    "accessToken": "02feefb0-f796-41e6-aea4-01355877d269",
+    "tokenType": "Bearer",
+    "expiresIn": 1800,
+    "expiresAt": 1561249553,
+    "refreshToken": "6172cdd2-8ccf-4fc1-86e3-c0a0f5fe833c",
+    "refreshExpiresIn": 3600,
+    "refreshExpiresAt": 1561251353
+  },
+  "resourceOwnerId": "ba2f9581-b2ac-405f-b8ea-96219c5c7979",
+  "profile": {
+    "partnerID": "40359977003288",
+    "citizenID": "7434542799469",
+    "passportNumber": "",
+    "alienID": "",
+    "thaiFirstName": "สุธัญวรรณ ",
+    "thaiLastName": "จูมคอม",
+    "engFirstName": "Sutunpan",
+    "engLastName": "Jumcom",
+    "birthDate": "1978-11-12",
+    "genderCode": "F",
+    "mobile": "(099)734-4422",
+    "email": "sutunpan.jumcom@scbsandbox.co.th",
+    "address": {
+      "thaiAddressNumber": "503/745",
+      "engAddressNumber": "503/745",
+      "thaiAddressMoo": "26",
+      "engAddressMoo": "26",
+      "thaiAddressThanon": "ดินแดง 1",
+      "engAddressThanon": "Din Daeng 1",
+      "thaiAddressDistrict": "ดินแดง",
+      "engAddressDistrict": "DIN DAENG",
+      "thaiAddressAmphur": "ดินแดง",
+      "engAddressAmphur": "DIN DAENG",
+      "thaiAddressProvince": "กรุงเทพมหานคร",
+      "engAddressProvince": "BANGKOK",
+      "thaiAddressState": "กรุงเทพมหานคร",
+      "engAddressState": "BANGKOK",
+      "countryCode": "TH",
+      "zipCode": "10400",
+      "floorNumber": "2",
+      "unitNumber": "417",
+      "currentAddressFlag": "Y"
+    }
+  }
+}

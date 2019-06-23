@@ -13,7 +13,7 @@ import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import RefreshIcon from '@material-ui/icons/Refresh';
 
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
 import RoomInfo from './RoomInfo';
 import EventHistory from './EventHistory';
@@ -21,8 +21,9 @@ import Dashboard from './Dashboard';
 import Profile from './Profile';
 import Login from './Login';
 import Token from './Token';
-import PayResult from './PayResult';
-import BidResult from './BidResult';
+import PayResult from './Result/PayResult';
+import BidResult from './Result/BidResult';
+import { TOKEN_KEY } from './constants';
 
 const styles = theme => ({
   paper: {
@@ -47,18 +48,29 @@ const styles = theme => ({
   },
 });
 
-function Content(props) {
-  const { classes } = props;
+const InRoom = withRouter(props => {
+  switch (props.tabId) {
+    case 0:
+      return <RoomInfo {...props} />;
+    case 1:
+      return <EventHistory {...props} />;
+    default:
+      return <RoomInfo {...props} />;
+  }
+});
 
-  // const token = localStorage.getItem('token');
-  const token = 'token';
+function Content(props) {
+  const { classes, tabId } = props;
+
+  const token = localStorage.getItem(TOKEN_KEY);
+  console.log('first token', token);
+  // const token = 'token';
 
   if (token) {
     return (
       <React.Fragment>
         <Switch>
-          <Route path="/room/:id" component={RoomInfo} />
-          <Route path="/events" component={EventHistory} />
+          <Route path="/room/:id" render={() => <InRoom tabId={tabId} />} />
           <Route path="/profile" component={Profile} />
           <Route path="/login" component={Login} />
           <Route path="/pay-result/:id" component={PayResult} />
@@ -83,4 +95,4 @@ Content.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Content);
+export default withRouter(withStyles(styles)(Content));

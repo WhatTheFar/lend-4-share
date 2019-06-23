@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Container } from '@material-ui/core';
-import { SERVER_URL } from '../constants';
+import { SERVER_URL, TOKEN_KEY } from '../constants';
 import useFetch from 'react-fetch-hook';
 import { Redirect } from 'react-router';
 import { useDocumentOnce } from 'react-firebase-hooks/firestore';
@@ -10,8 +10,8 @@ import queryString from 'query-string';
 function CreateUser({ userId, firstName, lastName, onCreate }) {
   const [userDoc, loading, error] = useDocumentOnce(
     db.doc(`users/${userId}`).set({
-      firstName,
-      lastName,
+      name: firstName,
+      surname: lastName,
     }),
   );
 
@@ -23,11 +23,7 @@ function CreateUser({ userId, firstName, lastName, onCreate }) {
 }
 
 function CreateUserIfNotExist({ userId, firstName, lastName, onCreate }) {
-  const [userDoc, loading, error] = useDocumentOnce(
-    db
-      .doc(`users/${userId}`)
-      .where('users', 'array-contains', db.doc(`/users/${userId}`)),
-  );
+  const [userDoc, loading, error] = useDocumentOnce(db.doc(`users/${userId}`));
 
   if (loading || error) return null;
   if (!userDoc.exists) {
@@ -61,15 +57,28 @@ function RequestToken({ code }) {
   }
 
   if (data) {
-    const { userId, accessToken, firstName, lastName } = data;
+    const {
+      token: { accessToken },
+      resourceOwnerId,
+      profile: {
+        citizenID: userId,
+        engFirstName: firstName,
+        engLastName: lastName,
+      },
+    } = data;
     const onCreate = () => {
-      localStorage.set('token', accessToken);
+      localStorage.setItem('userId', userId);
+      localStorage.setItem(TOKEN_KEY, accessToken);
+      localStorage.setItem('resourceOwnerId', resourceOwnerId);
+      localStorage.setItem('name', firstName);
+      localStorage.setItem('surname', lastName);
     };
     return (
       <CreateUserIfNotExist
         userId={userId}
         firstName={firstName}
         lastName={lastName}
+        onCreate={onCreate}
       />
     );
   }
@@ -84,7 +93,7 @@ function RequestToken({ code }) {
 }
 
 function Token({ location }) {
-  const query = queryString.parse(location.search)
+  const query = queryString.parse(location.search);
   const code = query.code;
 
   if (!code) {

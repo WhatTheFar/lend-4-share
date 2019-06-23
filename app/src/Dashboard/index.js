@@ -132,12 +132,10 @@ function Dashboard({ userId }) {
   // const [open, setOpen] = useState(true);
   const [open, setOpen] = useState(false);
   const [roomsSnapshot, loading, error] = useCollectionOnce(
-    db.collection('rooms').where('users', 'array-contains', userId || 'test'),
-    // .where('users', 'array-contains', {
-    //   ref: db.doc(`/users/${userId || 'test'}`),
-    //   peerOnRound: 1
-    // }),
-  );
+    db
+      .collection('rooms')
+      .where('users', 'array-contains', localStorage.getItem('userId')),
+ );
 
   const onClose = () => setOpen(false);
 

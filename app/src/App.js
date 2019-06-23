@@ -149,18 +149,11 @@ const styles = {
 class Paperbase extends React.Component {
   state = {
     mobileOpen: false,
+    tabId: 0,
   };
 
   onChange = (event, newValue) => {
-    let newRoute;
-
-    switch(newValue) {
-      case 0: newRoute = '/room'; break;
-      case 1: newRoute = '/events'; break;
-      default: newRoute = '/'; break;
-    }
-
-    this.props.history.push(newRoute);
+    this.setState({ tabId: newValue })
   } 
 
   render() {
@@ -186,7 +179,7 @@ class Paperbase extends React.Component {
           <div className={classes.appContent}>
             <Header onDrawerToggle={this.handleDrawerToggle} onChange={this.onChange} />
             <main className={classes.mainContent}>
-              <Content />
+              <Content tabId={this.state.tabId} />
             </main>
           </div>
         </div>

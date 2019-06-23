@@ -43,7 +43,6 @@ const members = [
 
 function RoomInfo({ match }) {
   console.log('RoomInfo');
-  console.log('roomId', match.params);
   const roomId = match.params.id;
   const [roomSnapshot, loading, error] = useDocumentData(
     db.doc(`rooms/${roomId}`),

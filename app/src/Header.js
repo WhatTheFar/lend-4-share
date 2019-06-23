@@ -16,7 +16,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
+import { TOKEN_KEY } from './constants';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
@@ -47,12 +48,16 @@ function Header(props) {
 
   const [currentTab, setTab] = useState(0);
 
-  const _onChange = ((extOnChange) => (event, newValue) => {
+  const _onChange = (extOnChange => (event, newValue) => {
     setTab(newValue);
     if (onChange) {
       onChange(event, newValue);
     }
-  })(onChange)
+  })(onChange);
+
+  const logout = () => {
+    localStorage.setItem(TOKEN_KEY, '');
+  };
 
   return (
     <React.Fragment>
@@ -77,7 +82,10 @@ function Header(props) {
                 <Avatar
                   className={classes.avatar}
                   alt="My Avatar"
-                >P</Avatar>
+                  onClick={() => logout()}
+                >
+                  P
+                </Avatar>
               </IconButton>
             </Grid>
           </Grid>
@@ -89,8 +97,7 @@ function Header(props) {
         color="primary"
         position="static"
         elevation={0}
-      >
-      </AppBar>
+      />
       <AppBar
         component="div"
         className={classes.secondaryBar}
@@ -98,13 +105,17 @@ function Header(props) {
         position="static"
         elevation={0}
       >
-        {
-          props.location.pathname === "/" ? null :
-          <Tabs variant="fullWidth" value={currentTab} textColor="inherit" onChange={_onChange}>
+        {props.location.pathname === '/' ? null : (
+          <Tabs
+            variant="fullWidth"
+            value={currentTab}
+            textColor="inherit"
+            onChange={_onChange}
+          >
             <Tab textColor="inherit" label="Room Info" />
             <Tab textColor="inherit" label="Event History" />
           </Tabs>
-        }
+        )}
       </AppBar>
     </React.Fragment>
   );

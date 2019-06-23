@@ -8,9 +8,9 @@ import {
 } from '@material-ui/core';
 import { AccountBalance } from '@material-ui/icons';
 import axios from 'axios';
-import { BILLER_ID, SERVER_URL, CLIENT_URL } from '../../constants';
+import { BILLER_ID, SERVER_URL, CLIENT_URL, TOKEN_KEY } from '../../constants';
 
-function BidPeerCard() {
+function BidPeerCard({ roomId, event }) {
   console.log('BidPeerCard');
 
   const [url, setUrl] = useState('');
@@ -22,12 +22,14 @@ function BidPeerCard() {
         {
           paymentAmount: '2000',
           accountTo: BILLER_ID,
+          resourceOwnerId: localStorage.getItem('resourceOwnerId'),
         },
-        { headers: { token: '81cba5ac-c747-41e1-b861-e8e124dc3238' } },
+        { headers: { token: localStorage.getItem(TOKEN_KEY) } },
       );
       console.log('url', result.data);
       setUrl(
-        result.data.deeplinkUrl + `?callback_url=${CLIENT_URL}/bid-result`,
+        result.data.deeplinkUrl +
+          `?callback_url=${CLIENT_URL}/bid-result/${roomId}`,
       );
     }
     call();
@@ -43,19 +45,23 @@ function BidPeerCard() {
         }
         style={{ paddingBottom: 0 }}
       />
-      <CardContent>
-        <Typography variant="subtitle1" color="textSecondary" align="center">
-          Bid ended.
-        </Typography>
-        <Fab
-          variant="extended"
-          disabled={!url}
-          color="primary"
-          aria-label="Add"
-          style={{ margin: '10px' }}
-        >
-          <a href={url}>Pay with SCB</a>
-        </Fab>
+      <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
+        {event.paid ? (
+          <Typography variant="subtitle1" color="textSecondary" align="center">
+            You already bid.
+          </Typography>
+        ) : null}
+        {event.paid ? null : (
+          <Fab
+            variant="extended"
+            disabled={!url && !event.paid}
+            color="primary"
+            aria-label="Add"
+            style={{ margin: '10px', flex: 1 }}
+          >
+            <a href={url}>Pay with SCB</a>
+          </Fab>
+        )}
       </CardContent>
     </Card>
   );
